@@ -11,7 +11,7 @@ MODEL = "qwen2.5:1.5b"
 def send_alert(payload, label):
     """Envía la alerta al ai_loop en un hilo aparte."""
     def run():
-        print(f"🤖 [{label}] Enviando alerta: {payload}")
+        print(f" [{label}] Enviando alerta: {payload}")
         try:
             response = requests.post(
                 "http://172.18.0.1:5000/alert",
@@ -19,16 +19,16 @@ def send_alert(payload, label):
                 timeout=500
             )
             data = response.json()
-            print(f"🤖 [{label}] Respuesta: {data}")
+            print(f" [{label}] Respuesta: {data}")
         except Exception as e:
-            print(f"❌ [{label}] Error: {e}")
+            print(f" [{label}] Error: {e}")
     thread = threading.Thread(target=run, daemon=True)
     thread.start()
 
 # --- Handlers ---
 
 def on_temp_alert(temp, severity):
-    print(f"⚠️  Temperatura fuera de rango: {temp}ºC (severidad {severity})")
+    print(f"  Temperatura fuera de rango: {temp}ºC (severidad {severity})")
     payload = {
         "alert_type": "temperature",
         "severity": severity,
@@ -39,13 +39,13 @@ def on_temp_alert(temp, severity):
     send_alert(payload, "TEMP_ALERT")
 
 def on_temp_normal(temp):
-    print(f"✅ Temperatura normal: {temp}ºC")
+    print(f" Temperatura normal: {temp}ºC")
 
 def on_movement(dist):
-    print(f"🚶 Movimiento detectado a {dist} mm")
+    print(f" Movimiento detectado a {dist} mm")
 
 def on_bathroom_timeout():
-    print("🚨 Persona lleva demasiado tiempo en el baño!")
+    print(" Persona lleva demasiado tiempo en el baño!")
     payload = {
         "alert_type": "bathroom_timeout",
         "severity": 3,

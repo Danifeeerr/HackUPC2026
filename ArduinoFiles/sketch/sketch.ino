@@ -62,12 +62,12 @@ void loop() {
         // Primera pasada: arranca el temporizador (entró)
         timerActive = true;
         timerStart = millis();
-        Monitor.println("⏱️  Temporizador iniciado (entrada al baño)");
+        Monitor.println("  Temporizador iniciado (entrada al baño)");
       } else {
         // Segunda pasada: la persona ha salido, cancela el temporizador
         timerActive = false;
         unsigned long elapsed = millis() - timerStart;
-        Monitor.print("✅ Salida detectada, tiempo dentro: ");
+        Monitor.print(" Salida detectada, tiempo dentro: ");
         Monitor.print(elapsed / 1000);
         Monitor.println("s");
       }
@@ -84,7 +84,7 @@ void loop() {
   // --- Comprobar timeout del baño ---
   if (timerActive && (millis() - timerStart > BATHROOM_TIMEOUT)) {
     Bridge.notify("bathroom_timeout");
-    Monitor.println("🚨 ALERTA: persona lleva más de 3 min en el baño");
+    Monitor.println(" ALERTA: persona lleva más de 3 min en el baño");
     timerActive = false;  // Reset para no spamear
   }
 
