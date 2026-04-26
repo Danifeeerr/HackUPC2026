@@ -24,11 +24,12 @@ void setup() {
   Monitor.begin();
   Modulino.begin();
   thermo.begin();
-  distance.begin();
+  distance.begin();  
 }
 
 void loop() {
   float temperature = thermo.getTemperature();
+  
 
   // --- Temperatura ---
   bool tempOutOfRange = (temperature > TEMP_HIGH || temperature < TEMP_LOW);

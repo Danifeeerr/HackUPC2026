@@ -1,37 +1,27 @@
+
 import time
 import threading
 import requests
 import json
 from arduino.app_utils import App, Bridge
 
-LLM_URL = "http://172.18.0.1:11434/api/chat"
+LLM_URL = "http://172.18.0.1:5000/alert"
 MODEL = "qwen2.5:1.5b"
 
 def send_alert(payload, label):
-    """Envía la alerta al LLM en un hilo aparte."""
+    """Envía la alerta al ai_loop en un hilo aparte."""
     def run():
         print(f"🤖 [{label}] Enviando alerta: {payload}")
         try:
             response = requests.post(
-                LLM_URL,
-                json={
-                    "model": MODEL,
-                    "messages": [
-                        {
-                            "role": "user",
-                            "content": json.dumps(payload)
-                        }
-                    ],
-                    "stream": False
-                },
-                timeout=12000
+                "http://172.18.0.1:5000/alert",
+                json=payload,
+                timeout=500
             )
             data = response.json()
-            content = data.get("message", {}).get("content", "")
-            print(f"🤖 [{label}] Respuesta: {content}")
+            print(f"🤖 [{label}] Respuesta: {data}")
         except Exception as e:
             print(f"❌ [{label}] Error: {e}")
-
     thread = threading.Thread(target=run, daemon=True)
     thread.start()
 
